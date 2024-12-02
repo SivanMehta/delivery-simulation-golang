@@ -1,0 +1,8 @@
+# ignore everything
+* 
+
+# re-include directories
+!/**/
+
+# re-include files
+!*.*
