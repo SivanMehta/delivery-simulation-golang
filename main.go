@@ -7,7 +7,10 @@ import (
 )
 
 func main() {
-	settings := tools.GetSimulationSettings()
+	settings, err := tools.GetSimulationSettings()
+	if err != nil {
+		panic(err)
+	}
 	tools.PrintArgs(settings)
 
 	msBetweenOrders := 1000.0 / float32(settings.IngestionRate)

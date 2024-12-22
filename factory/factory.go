@@ -60,7 +60,7 @@ func (f *Factory) Intake(order Order) {
 		f.Log(`Placed order for %s on overflow`, order.Item.Id)
 	} else {
 		acceptedOrder = false
-		f.Log(`Factory at capacity`)
+		f.Log(`Factory at capacity ¯\_(ツ)_/¯`)
 	}
 
 	if acceptedOrder {
