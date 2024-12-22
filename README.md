@@ -82,23 +82,23 @@ go mod download
 go test
 
 # build the simulation
-go build simulation
+go build
 
 # start the simulation
-./simulation
+./main
 ```
 
 You can tune the simulation by providing CLI parameters. Here are all of the
 flags with their default value:
 
 ```shell
-./simulation -- 
+./main
   # how quickly orders come in, in orders / second
-  --ingestionRate=3
+  -ingestionRate=3
   
   # the fastest couriers can fulfull an order, in seconds
-  --courierSpeedLow=2
+  -courierSpeedLow=2
   
   # the slowest couriers can fulfull an order, seconds
-  --courierSpeedHigh=6
+  -courierSpeedHigh=6
 ```
