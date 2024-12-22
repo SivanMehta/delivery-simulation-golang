@@ -24,8 +24,6 @@ func GenerateMenu() Menu {
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
-	} else {
-		fmt.Println("Successfully Opened menu.json")
 	}
 	// defer the closing of our jsonFile so that we can parse it first
 	defer jsonFile.Close()
