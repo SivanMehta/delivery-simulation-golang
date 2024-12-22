@@ -3,6 +3,7 @@ package factory
 import (
 	"fmt"
 	"main/tools"
+	"math/rand"
 	"time"
 )
 
@@ -49,6 +50,7 @@ func (f *Factory) Intake(order Order) {
 
 	targetShelf := f.Storage[order.Item.Temp]
 	overflowShelf := f.Storage["overflow"]
+	acceptedOrder := true
 
 	if targetShelf.HasCapacity() {
 		targetShelf.Register(order)
@@ -57,6 +59,42 @@ func (f *Factory) Intake(order Order) {
 		overflowShelf.Register(order)
 		f.Log(`Placed order for %s on overflow`, order.Item.Id)
 	} else {
+		acceptedOrder = false
 		f.Log(`Factory at capacity`)
+	}
+
+	if acceptedOrder {
+		go f.DispatchCourier(order)
+	}
+}
+
+func (f *Factory) DispatchCourier(order Order) {
+	// wait a random amount of time to deliver the order
+	// this is basically simulating cooking time
+	var low int = f.Settings.CourierSpeedLow
+	var high int = f.Settings.CourierSpeedHigh
+	deliverySpeed := (low + rand.Intn(high-low))
+	interval := time.Duration(deliverySpeed * int(time.Millisecond))
+	time.Sleep(interval)
+
+	// now attempt to deliver the order
+	targetShelf := f.Storage[order.Item.Temp]
+	overflowShelf := f.Storage["overflow"]
+	var deliveryStatus string
+
+	if targetShelf.Contains(order) {
+		targetShelf.Remove(order)
+		deliveryStatus = targetShelf.Name
+	} else if overflowShelf.Contains(order) {
+		overflowShelf.Remove(order)
+		deliveryStatus = overflowShelf.Name
+	} else {
+		deliveryStatus = "removed"
+	}
+
+	if deliveryStatus != "removed" {
+		f.Log(`Delivered %s from %s shelf`, order.Item.Id, deliveryStatus)
+	} else {
+		f.Log("Threw away %s", order.Item.Id)
 	}
 }

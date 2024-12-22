@@ -37,3 +37,19 @@ func (s *Shelf) Register(order Order) {
 func (s *Shelf) HasCapacity() bool {
 	return (s.Capacity > s.FoodOnShelf)
 }
+
+func (s *Shelf) Contains(order Order) bool {
+	orders := s.orders
+	id := order.Item.Id
+
+	_, exists := orders[id]
+
+	return exists
+}
+
+func (s *Shelf) Remove(order Order) {
+	s.lock.Lock()
+	delete(s.orders, order.Item.Id)
+	s.FoodOnShelf -= 1
+	s.lock.Unlock()
+}
