@@ -29,8 +29,9 @@ func NewFactory(settings tools.SimulationSettings) Factory {
 	return newFactory
 }
 
-func (f *Factory) Log(message string) {
+func (f *Factory) Log(msg string, args ...any) {
 	now := time.Now().Unix()
+	message := fmt.Sprintf(msg, args...)
 
 	output := fmt.Sprintf(
 		`%d,%s,%d,%d,%d,%d`,
@@ -44,9 +45,16 @@ func (f *Factory) Log(message string) {
 }
 
 func (f *Factory) Intake(order Order) {
-	msg := fmt.Sprintf(`Placing order for %s for %s`, order.Item.Id, order.Item.Temp)
-	f.Log(msg)
+	f.Log(`Placing order for %s for %s`, order.Item.Id, order.Item.Temp)
 
 	targetShelf := f.Storage[order.Item.Temp]
-	targetShelf.Register(order)
+	overflowShelf := f.Storage["overflow"]
+
+	if targetShelf.HasCapacity() {
+		targetShelf.Register(order)
+		f.Log(`Placed order for %s on %s`, order.Item.Id, order.Item.Temp)
+	} else if overflowShelf.HasCapacity() {
+		overflowShelf.Register(order)
+		f.Log(`Placed order for %s on overflow`, order.Item.Id)
+	}
 }

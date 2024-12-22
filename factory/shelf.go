@@ -6,7 +6,7 @@ import (
 
 type Shelf struct {
 	Name        string
-	lock        *sync.Mutex
+	lock        sync.Mutex
 	Temperature string
 	Capacity    int
 	FoodOnShelf int
@@ -28,6 +28,12 @@ func NewShelf(name string, temperature string, capacity int) *Shelf {
 }
 
 func (s *Shelf) Register(order Order) {
+	s.lock.Lock()
 	s.orders[order.Item.Id] = true
 	s.FoodOnShelf += 1
+	s.lock.Unlock()
+}
+
+func (s *Shelf) HasCapacity() bool {
+	return (s.Capacity > s.FoodOnShelf)
 }
