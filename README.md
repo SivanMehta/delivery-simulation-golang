@@ -94,11 +94,11 @@ flags with their default value:
 ```shell
 ./main
   # how quickly orders come in, in orders / second
-  -ingestionRate=3
+  -IngestionRate=3
   
   # the fastest couriers can fulfull an order, in seconds
-  -courierSpeedLow=2
+  -CourierSpeedLow=2
   
   # the slowest couriers can fulfull an order, seconds
-  -courierSpeedHigh=6
+  -CourierSpeedHigh=6
 ```

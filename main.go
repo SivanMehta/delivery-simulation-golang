@@ -1,27 +1,23 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"main/tools"
 	"time"
 )
 
 func main() {
-	ingestionRate := flag.Int("ingestionRate", 3, "How quickly orders come in, in orders / second")
-	courierSpeedLow := flag.Int("courierSpeedLow", 2, "How quickly the fastest couriers can fulfull an order, in seconds")
-	courierSpeedHigh := flag.Int("courierSpeedHigh", 6, "How slowly couriers can fulfull an order, seconds")
-
-	flag.Parse()
+	settings := tools.GetSimulationSettings()
 
 	fmt.Printf(`
 Starting simulation with params:
-	ingestionRate: %d,
-	courierSpeedLow: %d,
-	courierSpeedHigh: %d
+	IngestionRate: %d,
+	CourierSpeedLow: %d,
+	CourierSpeedHigh: %d
 
-`, *ingestionRate, *courierSpeedLow, *courierSpeedHigh)
+`, settings.IngestionRate, settings.CourierSpeedLow, settings.CourierSpeedHigh)
 
-	msBetweenOrders := 1000.0 / float32(*ingestionRate)
+	msBetweenOrders := 1000.0 / float32(settings.IngestionRate)
 	interval := time.Duration(msBetweenOrders * float32(time.Millisecond))
 
 	for {
