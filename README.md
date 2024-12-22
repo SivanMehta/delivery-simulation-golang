@@ -14,19 +14,6 @@ programming language, framework, and IDE to demonstrate your best work; however,
 we strongly discourage the use of microservices, kafka, REST APIs, RPCs, DBs,
 etc due to time constraints.
 
-## Gradic Rubric
-
-You are expected to build a system to handle the above scenarios that fulfills
-each element of this grading rubric to the best of your ability.
-- Meets all specified requirements from Challenge Prompt above
-- Is valid runnable code (via CLI or within your IDE)
-- Has appropriate usage of design patterns, concurrency, and data structures
-- Has extendable architecture (to allow for additions/changes during the Deep Dive with interviewers)
-- Has console or log output that allows interviewers to clearly understand and follow your system’s operations as it runs in real-time. Whenever events occur in your system (order received, picked up, discarded, etc), your system should output a message containing both a description of the triggering event and a full listing of shelves’ contents
-- Has comprehensive unit testing (covers all major components and flows)
-- Has production-quality code cleanliness
-- Has production-quality docs on all public functions (as if someone had to work with your code)
-
 ## Appendix
 
 ### Orders
