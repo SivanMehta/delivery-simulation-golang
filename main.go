@@ -16,8 +16,8 @@ func main() {
 	facility := factory.NewFactory(settings)
 
 	for {
-		factory.GenerateRandomOrder()
-		facility.Intake()
+		order := facility.GenerateRandomOrder()
+		facility.Intake(order)
 		time.Sleep(interval)
 	}
 }
