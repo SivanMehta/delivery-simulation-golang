@@ -7,16 +7,16 @@ import (
 
 type Factory struct {
 	Settings tools.SimulationSettings
-	Intake   func()
 	id       string
 }
 
-func Intake() {
-	fmt.Println("Intaking order")
+func (f *Factory) Intake() {
+	msg := fmt.Sprintf(`Intaking Order %d at facility #%s`, 123, f.id)
+	fmt.Println(msg)
 }
 
 func NewFactory(settings tools.SimulationSettings) Factory {
-	newFactory := Factory{Settings: settings, Intake: Intake, id: "123"}
+	newFactory := Factory{Settings: settings, id: "ice cream emporium"}
 
 	return newFactory
 }
