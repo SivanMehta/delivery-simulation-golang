@@ -7,16 +7,20 @@ import (
 
 type Factory struct {
 	Settings tools.SimulationSettings
-	id       string
+	Menu     Menu
 }
 
-func (f *Factory) Intake() {
-	msg := fmt.Sprintf(`Intaking Order %d at facility #%s`, 123, f.id)
+func (f *Factory) Intake(order Order) {
+	msg := fmt.Sprintf(`Placing order for %s for %s`, order.Item.Id, order.Item.Temp)
 	fmt.Println(msg)
 }
 
 func NewFactory(settings tools.SimulationSettings) Factory {
-	newFactory := Factory{Settings: settings, id: "ice cream emporium"}
+	menu := GenerateMenu()
+	newFactory := Factory{
+		Settings: settings,
+		Menu:     menu,
+	}
 
 	return newFactory
 }

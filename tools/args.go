@@ -3,7 +3,6 @@ package tools
 import (
 	"flag"
 	"fmt"
-	"time"
 )
 
 type SimulationSettings struct {
@@ -34,5 +33,4 @@ func PrintArgs(settings SimulationSettings) {
 ###########################
 
 `, settings.IngestionRate, settings.CourierSpeedLow, settings.CourierSpeedHigh)
-	time.Sleep(2 * time.Second)
 }

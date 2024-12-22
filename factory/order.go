@@ -1,13 +1,17 @@
 package factory
 
 import (
-	"fmt"
+	"math/rand"
 )
 
 type Order struct {
+	Item Item
 }
 
-func GenerateRandomOrder() Order {
-	fmt.Println("generating order from JSON")
-	return Order{}
+func (f *Factory) GenerateRandomOrder() Order {
+	randomItem := f.Menu.Items[rand.Intn(len(f.Menu.Items))]
+
+	return Order{
+		Item: randomItem,
+	}
 }
