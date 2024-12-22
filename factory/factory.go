@@ -56,5 +56,7 @@ func (f *Factory) Intake(order Order) {
 	} else if overflowShelf.HasCapacity() {
 		overflowShelf.Register(order)
 		f.Log(`Placed order for %s on overflow`, order.Item.Id)
+	} else {
+		f.Log(`Factory at capacity`)
 	}
 }
