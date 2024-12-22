@@ -32,5 +32,6 @@ func PrintArgs(settings SimulationSettings) {
 #                         #
 ###########################
 
+time,message,hot,cold,frozen,overflow
 `, settings.IngestionRate, settings.CourierSpeedLow, settings.CourierSpeedHigh)
 }
