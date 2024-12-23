@@ -13,13 +13,13 @@ type SimulationSettings struct {
 }
 
 func GetSimulationSettings() (SimulationSettings, error) {
-	IngestionRate := flag.Int("IngestionRate", 3, "How quickly orders come in, in orders / second")
-	CourierSpeedLow := flag.Int("CourierSpeedLow", 2000, "How quickly the fastest couriers can fulfull an order, in ms")
-	CourierSpeedHigh := flag.Int("CourierSpeedHigh", 6000, "How slowly couriers can fulfull an order, ms")
+	IngestionRate := flag.Int("ingestionRate", 3, "How quickly orders come in, in orders / second")
+	CourierSpeedLow := flag.Int("courierSpeedLow", 2000, "How quickly the fastest couriers can fulfull an order, in ms")
+	CourierSpeedHigh := flag.Int("courierSpeedHigh", 6000, "How slowly couriers can fulfull an order, ms")
 
 	flag.Parse()
 
-	if *CourierSpeedHigh < *CourierSpeedLow {
+	if (*CourierSpeedHigh <= *CourierSpeedLow) || (*CourierSpeedLow <= 0) {
 		msg := fmt.Sprintf(`Invalid courier speed interval: [%d, %d]`, *CourierSpeedLow, *CourierSpeedHigh)
 		return SimulationSettings{}, errors.New(msg)
 	}
