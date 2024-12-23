@@ -28,4 +28,4 @@ jobs:
       run: go test -v
 
     - name: Runs for a minute
-      name: echo it works!
+      run: echo it works!
