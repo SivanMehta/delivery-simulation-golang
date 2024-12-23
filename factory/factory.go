@@ -59,8 +59,15 @@ func (f *Factory) Intake(order Order) {
 		overflowShelf.Register(order)
 		f.Log(`Placed order for %s on overflow`, order.Item.Id)
 	} else {
-		acceptedOrder = false
-		f.Log(`Factory at capacity ¯\_(ツ)_/¯`)
+		// attempt to make space
+		madeSpace := f.attemptToMakeSpace()
+		if madeSpace {
+			overflowShelf.Register(order)
+			f.Log(`Placed order for %s on overflow`, order.Item.Id)
+		} else {
+			acceptedOrder = false
+			f.Log(`Factory at capacity ¯\_(ツ)_/¯`)
+		}
 	}
 
 	if acceptedOrder {
@@ -97,4 +104,26 @@ func (f *Factory) DispatchCourier(order Order) {
 	} else {
 		f.Log("Threw away %s", order.Item.Id)
 	}
+}
+
+func (f *Factory) attemptToMakeSpace() bool {
+	// while we're rummaging around, we should lock up the entire facility
+	// so couriers don't mess with the counts
+	f.Storage["hot"].Lock.Lock()
+	f.Storage["cold"].Lock.Lock()
+	f.Storage["frozen"].Lock.Lock()
+	f.Storage["overflow"].Lock.Lock()
+
+	madeSpace := false
+	overflow := f.Storage["overflow"]
+	//for key := range maps.Keys(f.Storage["overflow"].Orders) {
+	// if we can move the item back, do so and mark that we made space
+	//}
+
+	f.Storage["hot"].Lock.Unlock()
+	f.Storage["cold"].Lock.Unlock()
+	f.Storage["frozen"].Lock.Unlock()
+	overflow.Lock.Unlock()
+
+	return madeSpace
 }
