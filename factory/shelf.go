@@ -10,11 +10,11 @@ type Shelf struct {
 	Temperature string
 	Capacity    int
 	FoodOnShelf int
-	Orders      map[string]string
+	Orders      map[string]Item
 }
 
 func NewShelf(name string, temperature string, capacity int) *Shelf {
-	orders := make(map[string]string)
+	orders := make(map[string]Item)
 
 	shelf := &Shelf{
 		Name:        name,
@@ -29,7 +29,7 @@ func NewShelf(name string, temperature string, capacity int) *Shelf {
 
 func (s *Shelf) Register(order Order) {
 	s.Lock.Lock()
-	s.Orders[order.Item.Id] = order.Item.Temp
+	s.Orders[order.Item.Id] = order.Item
 	s.FoodOnShelf += 1
 	s.Lock.Unlock()
 }

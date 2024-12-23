@@ -3,6 +3,7 @@ package factory
 import (
 	"fmt"
 	"main/tools"
+	"maps"
 	"math/rand"
 	"time"
 )
@@ -107,23 +108,17 @@ func (f *Factory) DispatchCourier(order Order) {
 }
 
 func (f *Factory) attemptToMakeSpace() bool {
-	// while we're rummaging around, we should lock up the entire facility
-	// so couriers don't mess with the counts
-	f.Storage["hot"].Lock.Lock()
-	f.Storage["cold"].Lock.Lock()
-	f.Storage["frozen"].Lock.Lock()
-	f.Storage["overflow"].Lock.Lock()
-
 	madeSpace := false
 	overflow := f.Storage["overflow"]
-	//for key := range maps.Keys(f.Storage["overflow"].Orders) {
-	// if we can move the item back, do so and mark that we made space
-	//}
-
-	f.Storage["hot"].Lock.Unlock()
-	f.Storage["cold"].Lock.Unlock()
-	f.Storage["frozen"].Lock.Unlock()
-	overflow.Lock.Unlock()
+	for key := range maps.Keys(f.Storage["overflow"].Orders) {
+		order := Order{Item: overflow.Orders[key], Id: key}
+		if f.Storage[order.Item.Temp].HasCapacity() {
+			overflow.Remove(order)
+			f.Storage[order.Item.Temp].Register(order)
+			f.Log(`Moved %s from overflow to %s`, order.Item.Id, order.Item.Temp)
+			madeSpace = true
+		}
+	}
 
 	return madeSpace
 }
