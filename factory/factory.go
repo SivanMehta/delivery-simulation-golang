@@ -31,7 +31,7 @@ func NewFactory(settings tools.SimulationSettings) Factory {
 	return newFactory
 }
 
-func (f *Factory) Log(msg string, args ...any) {
+func (f *Factory) log(msg string, args ...any) {
 	var now int64 = time.Now().Unix()
 	var message string = fmt.Sprintf(msg, args...)
 
@@ -47,7 +47,7 @@ func (f *Factory) Log(msg string, args ...any) {
 }
 
 func (f *Factory) Intake(order Order) {
-	f.Log(`Placing order for %s for %s`, order.Item.Id, order.Item.Temp)
+	f.log(`Placing order for %s for %s`, order.Item.Id, order.Item.Temp)
 
 	var targetShelf *Shelf = f.Storage[order.Item.Temp]
 	var overflowShelf *Shelf = f.Storage["overflow"]
@@ -55,19 +55,19 @@ func (f *Factory) Intake(order Order) {
 
 	if targetShelf.HasCapacity() {
 		targetShelf.Register(order)
-		f.Log(`Placed order for %s on %s`, order.Item.Id, order.Item.Temp)
+		f.log(`Placed order for %s on %s`, order.Item.Id, order.Item.Temp)
 	} else if overflowShelf.HasCapacity() {
 		overflowShelf.Register(order)
-		f.Log(`Placed order for %s on overflow`, order.Item.Id)
+		f.log(`Placed order for %s on overflow`, order.Item.Id)
 	} else {
 		// attempt to make space
 		var madeSpace bool = f.attemptToMakeSpace()
 		if madeSpace {
 			overflowShelf.Register(order)
-			f.Log(`Placed order for %s on overflow`, order.Item.Id)
+			f.log(`Placed order for %s on overflow`, order.Item.Id)
 		} else {
 			acceptedOrder = false
-			f.Log(`Factory at capacity ¯\_(ツ)_/¯`)
+			f.log(`Factory at capacity ¯\_(ツ)_/¯`)
 		}
 	}
 
@@ -75,11 +75,11 @@ func (f *Factory) Intake(order Order) {
 		// we do not pass a channel to this goroutine
 		// because we do not want to block accepting other orders
 		// while accepting this one
-		go f.DispatchCourier(order)
+		go f.dispatchCourier(order)
 	}
 }
 
-func (f *Factory) DispatchCourier(order Order) {
+func (f *Factory) dispatchCourier(order Order) {
 	// wait a random amount of time to deliver the order
 	// this is basically simulating cooking time
 	var low int = f.Settings.CourierSpeedLow
@@ -104,9 +104,9 @@ func (f *Factory) DispatchCourier(order Order) {
 	}
 
 	if deliveryStatus != "removed" {
-		f.Log(`Delivered %s from %s shelf`, order.Item.Id, deliveryStatus)
+		f.log(`Delivered %s from %s shelf`, order.Item.Id, deliveryStatus)
 	} else {
-		f.Log("Threw away %s", order.Item.Id)
+		f.log("Threw away %s", order.Item.Id)
 	}
 }
 
@@ -118,7 +118,7 @@ func (f *Factory) attemptToMakeSpace() bool {
 		if f.Storage[order.Item.Temp].HasCapacity() {
 			overflow.Remove(order)
 			f.Storage[order.Item.Temp].Register(order)
-			f.Log(`Moved %s from overflow to %s`, order.Item.Id, order.Item.Temp)
+			f.log(`Moved %s from overflow to %s`, order.Item.Id, order.Item.Temp)
 			madeSpace = true
 		}
 	}
