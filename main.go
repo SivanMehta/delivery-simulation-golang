@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func main() {
+func startFactory() {
 	settings, err := tools.GetSimulationSettings()
 	if err != nil {
 		panic(err)
@@ -23,4 +23,12 @@ func main() {
 		facility.Intake(order)
 		time.Sleep(interval)
 	}
+}
+
+func main() {
+	go startFactory()
+
+	// start any other concurrent processes here
+	// maybe a DB connection, or a web server
+	select {}
 }

@@ -6,32 +6,32 @@ import (
 
 type Shelf struct {
 	Name        string
-	lock        sync.Mutex
+	Lock        sync.Mutex
 	Temperature string
 	Capacity    int
 	FoodOnShelf int
-	orders      map[string]bool
+	Orders      map[string]Item
 }
 
 func NewShelf(name string, temperature string, capacity int) *Shelf {
-	orders := make(map[string]bool)
+	orders := make(map[string]Item)
 
 	shelf := &Shelf{
 		Name:        name,
 		Temperature: temperature,
 		Capacity:    capacity,
 		FoodOnShelf: 0,
-		orders:      orders,
+		Orders:      orders,
 	}
 
 	return shelf
 }
 
 func (s *Shelf) Register(order Order) {
-	s.lock.Lock()
-	s.orders[order.Item.Id] = true
+	s.Lock.Lock()
+	s.Orders[order.Item.Id] = order.Item
 	s.FoodOnShelf += 1
-	s.lock.Unlock()
+	s.Lock.Unlock()
 }
 
 func (s *Shelf) HasCapacity() bool {
@@ -39,7 +39,7 @@ func (s *Shelf) HasCapacity() bool {
 }
 
 func (s *Shelf) Contains(order Order) bool {
-	orders := s.orders
+	orders := s.Orders
 	id := order.Item.Id
 
 	_, exists := orders[id]
@@ -48,8 +48,8 @@ func (s *Shelf) Contains(order Order) bool {
 }
 
 func (s *Shelf) Remove(order Order) {
-	s.lock.Lock()
-	delete(s.orders, order.Item.Id)
+	s.Lock.Lock()
+	delete(s.Orders, order.Item.Id)
 	s.FoodOnShelf -= 1
-	s.lock.Unlock()
+	s.Lock.Unlock()
 }

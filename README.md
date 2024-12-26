@@ -81,11 +81,11 @@ flags with their default value:
 ```shell
 ./main
   # how quickly orders come in, in orders / second
-  -IngestionRate=3
+  --ingestionRate=3
   
   # the fastest couriers can fulfull an order, in seconds
-  -CourierSpeedLow=2
+  --courierSpeedLow=2
   
   # the slowest couriers can fulfull an order, seconds
-  -CourierSpeedHigh=6
+  --courierSpeedHigh=6
 ```
