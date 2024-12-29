@@ -20,15 +20,15 @@ type Menu struct {
 }
 
 func GenerateMenu() Menu {
-	jsonFile, err := os.Open("factory/menu.json")
+	file, err := os.Open("factory/menu.json")
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
 	}
-	// defer the closing of our jsonFile so that we can parse it first
-	defer jsonFile.Close()
+	// defer the closing of our file so that we can parse it first
+	defer file.Close()
 
-	byteValue, _ := ioutil.ReadAll(jsonFile)
+	byteValue, _ := ioutil.ReadAll(file)
 
 	var menu Menu
 	json.Unmarshal(byteValue, &menu)
