@@ -32,8 +32,8 @@ func GetSimulationSettings() (SimulationSettings, error) {
 	return SimulationSettings{*IngestionRate, *CourierSpeedLow, *CourierSpeedHigh}, nil
 }
 
-func PrintArgs(settings SimulationSettings) {
-	fmt.Printf(`
+func PrintArgs(settings SimulationSettings) string {
+	return fmt.Sprintf(`
 Simulation with params:
   IngestionRate: %d
   CourierSpeedLow: %d
