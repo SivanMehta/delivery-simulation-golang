@@ -22,7 +22,7 @@ jobs:
         go-version: '1.23.0'
 
     - name: Unit Test
-      run: go test -v
+      run: go test -v ./factory
 
     - name: Build and run for a minute
       run: sh smoke.sh
