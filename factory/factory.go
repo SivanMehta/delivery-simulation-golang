@@ -1,7 +1,6 @@
 package factory
 
 import (
-	"fmt"
 	"main/tools"
 	"maps"
 	"math/rand"
@@ -12,10 +11,12 @@ type Factory struct {
 	Settings tools.SimulationSettings
 	Menu     Menu
 	Storage  map[string]*Shelf
+	UI       *UI
 }
 
 func NewFactory(settings tools.SimulationSettings) Factory {
 	menu := GenerateMenu()
+	UI := GenerateUI(settings)
 	shelves := map[string]*Shelf{
 		"hot":      NewShelf("Hot shelf", "hot", 10),
 		"cold":     NewShelf("Cold shelf", "cold", 10),
@@ -26,24 +27,27 @@ func NewFactory(settings tools.SimulationSettings) Factory {
 		Settings: settings,
 		Menu:     menu,
 		Storage:  shelves,
+		UI:       UI,
 	}
 
 	return newFactory
 }
 
 func (f *Factory) log(msg string, args ...any) {
-	var now int64 = time.Now().Unix()
-	var message string = fmt.Sprintf(msg, args...)
+	// var now int64 = time.Now().Unix()
+	// var message string = fmt.Sprintf(msg, args...)
 
-	var output string = fmt.Sprintf(
-		`%d,%s,%d,%d,%d,%d`,
-		now, message,
-		f.Storage["hot"].FoodOnShelf,
-		f.Storage["cold"].FoodOnShelf,
-		f.Storage["frozen"].FoodOnShelf,
-		f.Storage["overflow"].FoodOnShelf,
-	)
-	fmt.Println(output)
+	// var output string = fmt.Sprintf(
+	// 	`%d,%s,%d,%d,%d,%d`,
+	// 	now, message,
+	// 	f.Storage["hot"].FoodOnShelf,
+	// 	f.Storage["cold"].FoodOnShelf,
+	// 	f.Storage["frozen"].FoodOnShelf,
+	// 	f.Storage["overflow"].FoodOnShelf,
+	// )
+	// fmt.Println(output)
+
+	//f.UI.View.SetText(currentTimeString())
 }
 
 func (f *Factory) Intake(order Order) {
