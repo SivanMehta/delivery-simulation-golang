@@ -45,9 +45,9 @@ func (f *Factory) log(msg string, args ...any) {
 	// 	f.Storage["frozen"].FoodOnShelf,
 	// 	f.Storage["overflow"].FoodOnShelf,
 	// )
+	// write to log store
+	// update the UI
 	// fmt.Println(output)
-
-	//f.UI.View.SetText(currentTimeString())
 }
 
 func (f *Factory) Intake(order Order) {
